@@ -66,6 +66,17 @@ GameManager.prototype.setup = function () {
 GameManager.prototype.addStartTiles = function () {
   for (var i = 0; i < this.startTiles; i++) {
     this.addRandomTile();
+    // this.addSpecificTile(i + 1, (i % 4), Math.floor(i / 4));
+  }
+};
+
+// Adds a specific tile in a specific position
+GameManager.prototype.addSpecificTile = function (number, posX, posY) {
+  if (this.grid.cellsAvailable()) {
+    var value = number;
+    var tile = new Tile({x: posX, y: posY}, value);
+	console.log(tile);
+    this.grid.insertTile(tile);
   }
 };
 
@@ -157,7 +168,11 @@ GameManager.prototype.move = function (direction) {
         var next      = self.grid.cellContent(positions.next);
 
         // Only one merger per row traversal?
-        if (next && next.value === tile.value && !next.mergedFrom) {
+        if (next && next.value === tile.value && !next.mergedFrom &&
+		    tile.x === positions.farthest.x &&
+			tile.y === positions.farthest.y) {
+		
+		  console.log(tile, positions.next);
           var merged = new Tile(positions.next, tile.value * 2);
           merged.mergedFrom = [tile, next];
 
@@ -224,14 +239,14 @@ GameManager.prototype.buildTraversals = function (vector) {
 };
 
 GameManager.prototype.findFarthestPosition = function (cell, vector) {
-  var previous;
-
-  // Progress towards the vector direction until an obstacle is found
-  do {
-    previous = cell;
+  var previous = cell;
+  cell         = { x: previous.x + vector.x, y: previous.y + vector.y };
+  
+  if (this.grid.withinBounds(cell) &&
+      this.grid.cellAvailable(cell)) {
+	previous = cell;
     cell     = { x: previous.x + vector.x, y: previous.y + vector.y };
-  } while (this.grid.withinBounds(cell) &&
-           this.grid.cellAvailable(cell));
+  }
 
   return {
     farthest: previous,
