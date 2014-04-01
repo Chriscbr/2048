@@ -70,20 +70,18 @@ GameManager.prototype.addStartTiles = function () {
   }
 };
 
-// Adds a specific tile in a specific position
-GameManager.prototype.addSpecificTile = function (number, posX, posY) {
-  if (this.grid.cellsAvailable()) {
-    var value = number;
-    var tile = new Tile({x: posX, y: posY}, value);
-	console.log(tile);
-    this.grid.insertTile(tile);
-  }
-};
-
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function () {
   if (this.grid.cellsAvailable()) {
-    var value = Math.random() < 0.9 ? 2 : 4;
+	var rand = Math.random();
+	var value;
+	if (rand < 0.33) {
+		value = "fa-leaf";
+	} else if (rand < 0.66) {
+		value = "fa-tint";
+	} else {
+		value = "fa-fire";
+	}
     var tile = new Tile(this.grid.randomAvailableCell(), value);
 
     this.grid.insertTile(tile);
