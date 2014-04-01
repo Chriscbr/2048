@@ -56,7 +56,7 @@ HTMLActuator.prototype.addTile = function (tile) {
   var positionClass = this.positionClass(position);
 
   // We can't use classlist because it somehow glitches when replacing classes
-  var classes = ["tile", "tile-" + tile.value, positionClass];
+  var classes = ["tile", "tile-" + tile.type + "-" + tile.value, positionClass];
 
   if (tile.value > 2048) classes.push("tile-super");
 
@@ -64,7 +64,14 @@ HTMLActuator.prototype.addTile = function (tile) {
 
   inner.classList.add("tile-inner");
   icon.classList.add("fa");
-  icon.classList.add(tile.value);
+  
+  if (tile.type === "grass") {
+    icon.classList.add("fa-leaf");
+  } else if (tile.type === "water") {
+    icon.classList.add("fa-tint");
+  } else if (tile.type === "fire") {
+    icon.classList.add("fa-fire");
+  }
 
   if (tile.previousPosition) {
     // Make sure that the tile gets rendered in the previous position first

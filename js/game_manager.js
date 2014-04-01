@@ -4,7 +4,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator;
 
-  this.startTiles     = 2;
+  this.startTiles     = 4;
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
@@ -73,16 +73,17 @@ GameManager.prototype.addStartTiles = function () {
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function () {
   if (this.grid.cellsAvailable()) {
+    var value = 1;
 	var rand = Math.random();
-	var value;
+	var type;
 	if (rand < 0.33) {
-		value = "fa-leaf";
+		type = "grass";
 	} else if (rand < 0.66) {
-		value = "fa-tint";
+		type = "water";
 	} else {
-		value = "fa-fire";
+		type = "fire";
 	}
-    var tile = new Tile(this.grid.randomAvailableCell(), value);
+    var tile = new Tile(this.grid.randomAvailableCell(), value, type);
 
     this.grid.insertTile(tile);
   }
@@ -166,12 +167,13 @@ GameManager.prototype.move = function (direction) {
         var next      = self.grid.cellContent(positions.next);
 
         // Only one merger per row traversal?
-        if (next && next.value === tile.value && !next.mergedFrom &&
-		    tile.x === positions.farthest.x &&
-			tile.y === positions.farthest.y) {
+        if (next && next.value === tile.value &&
+			next.type === tile.type &&
+			tile.value < 3 && // no tiles of greater value than 3
+			!next.mergedFrom) {
 		
 		  console.log(tile, positions.next);
-          var merged = new Tile(positions.next, tile.value * 2);
+          var merged = new Tile(positions.next, tile.value + 1, tile.type);
           merged.mergedFrom = [tile, next];
 
           self.grid.insertTile(merged);
@@ -237,14 +239,14 @@ GameManager.prototype.buildTraversals = function (vector) {
 };
 
 GameManager.prototype.findFarthestPosition = function (cell, vector) {
-  var previous = cell;
-  cell         = { x: previous.x + vector.x, y: previous.y + vector.y };
+  var previous;
   
-  if (this.grid.withinBounds(cell) &&
-      this.grid.cellAvailable(cell)) {
-	previous = cell;
+  // Progress towards the vector direction until an obstacle is found
+  do {
+    previous = cell;
     cell     = { x: previous.x + vector.x, y: previous.y + vector.y };
-  }
+  } while (this.grid.withinBounds(cell) &&
+           this.grid.cellAvailable(cell));
 
   return {
     farthest: previous,
