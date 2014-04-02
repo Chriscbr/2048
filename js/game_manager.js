@@ -165,15 +165,21 @@ GameManager.prototype.move = function (direction) {
       if (tile) {
         var positions = self.findFarthestPosition(cell, vector);
         var next      = self.grid.cellContent(positions.next);
+		var next2     = self.grid.cellContent(positions.next2);
 
-        // Only one merger per row traversal?
+        // Combines types of the same type
         if (next && next.value === tile.value &&
 			next.type === tile.type &&
-			tile.value < 3 && // no tiles of greater value than 3
+			tile.value !== 3 && // no tiles of greater value than 3
 			!next.mergedFrom) {
-		
-		  console.log(tile, positions.next);
-          var merged = new Tile(positions.next, tile.value + 1, tile.type);
+          
+		  // Elements don't follow normal "doubling" rules
+		  var merged;
+		  if (tile.type === "number") {
+		    merged = new Tile(positions.next, tile.value * 2, tile.type);
+		  } else {
+            merged = new Tile(positions.next, tile.value + 1, tile.type);
+		  }
           merged.mergedFrom = [tile, next];
 
           self.grid.insertTile(merged);
@@ -187,7 +193,30 @@ GameManager.prototype.move = function (direction) {
 
           // The mighty 2048 tile
           if (merged.value === 2048) self.won = true;
-        } else {
+        } else if (next && next2 && !next.mergedFrom && // Combines different elemental values
+                   tile.type !== "number" &&
+				   next.type !== "number" &&
+				   next2.type !== "number" &&
+		           tile.value === next.value &&
+				   tile.value === next2.value &&
+				   tile.type !== next.type &&
+				   tile.type !== next2.type &&
+				   next.type !== next2.type) {
+	      
+		  var merged = new Tile(positions.next2, Math.pow(2, tile.value), "number");
+		  merged.mergedFrom = [tile, next2];
+		  
+		  self.grid.insertTile(merged);
+          self.grid.removeTile(tile);
+		  self.grid.removeTile(next);
+		  
+		  // Converge the three tiles' positions
+          tile.updatePosition(positions.next2);
+		  next.updatePosition(positions.next2);
+		  
+		  // Update the score
+          self.score += merged.value;
+		} else {
           self.moveTile(tile, positions.farthest);
         }
 
@@ -240,17 +269,20 @@ GameManager.prototype.buildTraversals = function (vector) {
 
 GameManager.prototype.findFarthestPosition = function (cell, vector) {
   var previous;
+  var cell2;
   
   // Progress towards the vector direction until an obstacle is found
   do {
     previous = cell;
     cell     = { x: previous.x + vector.x, y: previous.y + vector.y };
+	cell2    = { x: previous.x + (2 * vector.x) , y: previous.y + (2 * vector.y) };
   } while (this.grid.withinBounds(cell) &&
            this.grid.cellAvailable(cell));
 
   return {
     farthest: previous,
-    next: cell // Used to check if a merge is required
+    next: cell, // Used to check if a merge is required
+	next2: cell2 // Also used to check if a merge is required
   };
 };
 

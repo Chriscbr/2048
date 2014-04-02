@@ -51,7 +51,6 @@ HTMLActuator.prototype.addTile = function (tile) {
 
   var wrapper   = document.createElement("div");
   var inner     = document.createElement("div");
-  var icon      = document.createElement("i");
   var position  = tile.previousPosition || { x: tile.x, y: tile.y };
   var positionClass = this.positionClass(position);
 
@@ -63,14 +62,20 @@ HTMLActuator.prototype.addTile = function (tile) {
   this.applyClasses(wrapper, classes);
 
   inner.classList.add("tile-inner");
-  icon.classList.add("fa");
   
-  if (tile.type === "grass") {
-    icon.classList.add("fa-leaf");
-  } else if (tile.type === "water") {
-    icon.classList.add("fa-tint");
-  } else if (tile.type === "fire") {
-    icon.classList.add("fa-fire");
+  if (tile.type === "number") {
+    inner.textContent = tile.value;
+  } else {
+	var icon = document.createElement("i");
+	icon.classList.add("fa");
+	  
+	if (tile.type === "grass") {
+	  icon.classList.add("fa-leaf");
+	} else if (tile.type === "water") {
+	  icon.classList.add("fa-tint");
+	} else if (tile.type === "fire") {
+	  icon.classList.add("fa-fire");
+	}
   }
 
   if (tile.previousPosition) {
@@ -94,7 +99,9 @@ HTMLActuator.prototype.addTile = function (tile) {
 
   // Add the inner part of the tile to the wrapper
   wrapper.appendChild(inner);
-  inner.appendChild(icon);
+  if (icon) {
+    inner.appendChild(icon);
+  }
 
   // Put the tile on the board
   this.tileContainer.appendChild(wrapper);
