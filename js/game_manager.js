@@ -212,7 +212,7 @@ GameManager.prototype.move = function (direction) {
 				    (tile.type === "water" && next.type === "fire") ||
 					(tile.type === "fire" && next.type === "grass"))) {
 	      
-		  var merged = new Tile(positions.next, 2, "number");
+		  var merged = new Tile(positions.next, 4, "number");
 		  merged.mergedFrom = [tile, next];
 		  
 		  self.grid.insertTile(merged);
