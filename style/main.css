@@ -316,30 +316,12 @@ hr {
   .tile.tile-grass-1 .tile-inner {
     color: #ffffff;
 	background: #6bff6b; }
-  .tile.tile-grass-2 .tile-inner {
-    color: #ffffff;
-	background: #39cd39 }
-  .tile.tile-grass-3 .tile-inner {
-    color: #ffffff;
-	background: #079b07; }
   .tile.tile-water-1 .tile-inner {
     color: #ffffff;
 	background: #66ccff; }
-  .tile.tile-water-2 .tile-inner {
-    color: #ffffff;
-	background: #349acd; }
-  .tile.tile-water-3 .tile-inner {
-    color: #ffffff;
-	background: #02689b; }
   .tile.tile-fire-1 .tile-inner {
     color: #ffffff;
 	background: #ff6680; }
-  .tile.tile-fire-2 .tile-inner {
-    color: #ffffff;
-	background: #cd344e; }
-  .tile.tile-fire-3 .tile-inner {
-    color: #ffffff;
-	background: #9b021c; }
   .tile.tile-number-2 .tile-inner {
     color: #000000;
     background: #ffffff; }
@@ -356,7 +338,7 @@ hr {
     color: #000000;
     background: #ffffff; }
   .tile.tile-number-64 .tile-inner {
-    color: #ff6680;
+    color: #000000;
     background: #ffffff; }
   .tile.tile-number-128 .tile-inner {
     color: #000000;

@@ -170,16 +170,11 @@ GameManager.prototype.move = function (direction) {
         // Combines types of the same type
         if (next && next.value === tile.value &&
 			next.type === tile.type &&
-			tile.value !== 3 && // no tiles of greater value than 3
+			next.type === "number" &&
 			!next.mergedFrom) {
           
 		  // Elements don't follow normal "doubling" rules
-		  var merged;
-		  if (tile.type === "number") {
-		    merged = new Tile(positions.next, tile.value * 2, tile.type);
-		  } else {
-            merged = new Tile(positions.next, tile.value + 1, tile.type);
-		  }
+		  var merged = new Tile(positions.next, tile.value * 2, tile.type);
           merged.mergedFrom = [tile, next];
 
           self.grid.insertTile(merged);
@@ -193,26 +188,23 @@ GameManager.prototype.move = function (direction) {
 
           // The mighty 2048 tile
           if (merged.value === 2048) self.won = true;
-        } else if (next && next2 && !next.mergedFrom && // Combines different elemental values
+        } else if (next && !next.mergedFrom && // Combines different elemental values
                    tile.type !== "number" &&
 				   next.type !== "number" &&
-				   next2.type !== "number" &&
 		           tile.value === next.value &&
-				   tile.value === next2.value &&
-				   tile.type !== next.type &&
-				   tile.type !== next2.type &&
-				   next.type !== next2.type) {
+				   ((tile.type === "grass" && next.type === "water") ||
+				    (tile.type === "water" && next.type === "fire") ||
+					(tile.type === "fire" && next.type === "grass"))) {
 	      
-		  var merged = new Tile(positions.next2, Math.pow(2, tile.value), "number");
-		  merged.mergedFrom = [tile, next2];
+		  var merged = new Tile(positions.next, 2, "number");
+		  merged.mergedFrom = [tile, next];
 		  
 		  self.grid.insertTile(merged);
           self.grid.removeTile(tile);
-		  self.grid.removeTile(next);
 		  
 		  // Converge the three tiles' positions
-          tile.updatePosition(positions.next2);
-		  next.updatePosition(positions.next2);
+          tile.updatePosition(positions.next);
+		  next.updatePosition(positions.next);
 		  
 		  // Update the score
           self.score += merged.value;
@@ -229,7 +221,7 @@ GameManager.prototype.move = function (direction) {
 
   if (moved) {
     this.addRandomTile();
-
+    
     if (!this.movesAvailable()) {
       this.over = true; // Game over!
     }
@@ -307,7 +299,9 @@ GameManager.prototype.tileMatchesAvailable = function () {
 
           var other  = self.grid.cellContent(cell);
 
-          if (other && other.value === tile.value) {
+          if (other && other.value === tile.value &&
+		      ((other.type === "number" && tile.type === "number") || 
+			   (other.type !== tile.type && other.type !== "number" && tile.type !== "number"))) {
             return true; // These two tiles can be merged
           }
         }
