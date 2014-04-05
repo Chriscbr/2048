@@ -74,16 +74,59 @@ GameManager.prototype.addStartTiles = function () {
 };
 
 // Adds a tile in a random position
-GameManager.prototype.addRandomTile = function () {
+GameManager.prototype.addRandomTile = function (direction) {
+  // Restocks the deck if it is empty
   if (this.deck.length === 0) {
 	this.shuffleDeck();
   }
+  
   if (this.grid.cellsAvailable()) {
     var selection = Math.floor(Math.random() * this.deck.length);
-	var type = this.deck[selection];
-	this.deck.splice(selection, 1);
+	var type = this.deck[selection]; // Select random tile
+	this.deck.splice(selection, 1); // Remove tile from deck
+	var tile;
 	
-    var tile = new Tile(this.grid.randomAvailableCell(), 1, type);
+	// Limit spawning position based on swipe direction
+	if (direction) {
+		var allEmpty = this.grid.availableCells();
+		var goodEmpty = [];
+		switch (direction) {
+			case 0:
+              for (var i = 0; i < allEmpty.length; i++) {
+			    if (allEmpty[i].y === 3) {
+					goodEmpty.push(allEmpty[i]);
+				}
+			  }
+			  break;
+			case 1:
+			  for (var i = 0; i < allEmpty.length; i++) {
+			    if (allEmpty[i].x === 0) {
+					goodEmpty.push(allEmpty[i]);
+				}
+			  }
+			  break;
+			case 2:
+			  for (var i = 0; i < allEmpty.length; i++) {
+			    if (allEmpty[i].y === 0) {
+					goodEmpty.push(allEmpty[i]);
+				}
+			  }
+			  break;
+			case 3:
+			  for (var i = 0; i < allEmpty.length; i++) {
+			    if (allEmpty[i].x === 3) {
+					goodEmpty.push(allEmpty[i]);
+				}
+			  }
+			  break;
+			default: break;
+		}
+		var rand = Math.floor(Math.random() * goodEmpty.length);
+		var selected = goodEmpty[rand];
+		var tile = new Tile(selected, 1, type);
+	} else {
+		var tile = new Tile(this.grid.randomAvailableCell(), 1, type);
+	}
 
     this.grid.insertTile(tile);
   }
@@ -101,7 +144,6 @@ GameManager.prototype.shuffleDeck = function() {
 	for (i = 0; i < this.deckSize; i++) {
 		this.deck.push("fire");
 	}
-	console.log(this.deck);
 };
 
 // Sends the updated grid to the actuator
@@ -236,7 +278,7 @@ GameManager.prototype.move = function (direction) {
   });
 
   if (moved) {
-    this.addRandomTile();
+    this.addRandomTile(direction);
     
     if (!this.movesAvailable()) {
       this.over = true; // Game over!
