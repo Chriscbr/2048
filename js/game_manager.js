@@ -5,6 +5,8 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.actuator       = new Actuator;
 
   this.startTiles     = 4;
+  
+  this.deckSize       = 2; // 2 per elemental tile = 6 total
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
@@ -47,12 +49,14 @@ GameManager.prototype.setup = function () {
     this.over        = previousState.over;
     this.won         = previousState.won;
     this.keepPlaying = previousState.keepPlaying;
+    this.deck        = previousState.deck;
   } else {
     this.grid        = new Grid(this.size);
     this.score       = 0;
     this.over        = false;
     this.won         = false;
     this.keepPlaying = false;
+    this.deck        = [];
 
     // Add the initial tiles
     this.addStartTiles();
@@ -66,27 +70,38 @@ GameManager.prototype.setup = function () {
 GameManager.prototype.addStartTiles = function () {
   for (var i = 0; i < this.startTiles; i++) {
     this.addRandomTile();
-    // this.addSpecificTile(i + 1, (i % 4), Math.floor(i / 4));
   }
 };
 
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function () {
+  if (this.deck.length === 0) {
+	this.shuffleDeck();
+  }
   if (this.grid.cellsAvailable()) {
-    var value = 1;
-	var rand = Math.random();
-	var type;
-	if (rand < 0.33) {
-		type = "grass";
-	} else if (rand < 0.66) {
-		type = "water";
-	} else {
-		type = "fire";
-	}
-    var tile = new Tile(this.grid.randomAvailableCell(), value, type);
+    var selection = Math.floor(Math.random() * this.deck.length);
+	var type = this.deck[selection];
+	this.deck.splice(selection, 1);
+	
+    var tile = new Tile(this.grid.randomAvailableCell(), 1, type);
 
     this.grid.insertTile(tile);
   }
+};
+
+// Generates the new deck
+GameManager.prototype.shuffleDeck = function() {
+	var i;
+	for (i = 0; i < this.deckSize; i++) {
+		this.deck.push("grass");
+	}
+	for (i = 0; i < this.deckSize; i++) {
+		this.deck.push("water");
+	}
+	for (i = 0; i < this.deckSize; i++) {
+		this.deck.push("fire");
+	}
+	console.log(this.deck);
 };
 
 // Sends the updated grid to the actuator
@@ -119,7 +134,8 @@ GameManager.prototype.serialize = function () {
     score:       this.score,
     over:        this.over,
     won:         this.won,
-    keepPlaying: this.keepPlaying
+    keepPlaying: this.keepPlaying,
+	deck:        this.deck
   };
 };
 
