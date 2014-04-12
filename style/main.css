@@ -2,8 +2,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: #ffffff;
-  color: #000000;
+  background: #fff;
+  color: black;
   font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 18px; }
 
@@ -20,8 +20,7 @@ h1.title {
   font-weight: bold;
   margin: 0;
   display: block;
-  float: none;
-  text-align: center;  }
+  text-align: center; }
 
 @-webkit-keyframes move-up {
   0% {
@@ -73,7 +72,7 @@ h1.title {
     font-size: 13px;
     line-height: 13px;
     text-align: center;
-    color: #ffffff; }
+    color: white; }
   .score-container .score-addition, .best-container .score-addition {
     position: absolute;
     right: 30px;
@@ -81,7 +80,7 @@ h1.title {
     font-size: 25px;
     line-height: 25px;
     font-weight: bold;
-    color: rgba(100, 100, 100, 0.9);
+    color: rgba(0, 0, 0, 0.9);
     z-index: 100;
     -webkit-animation: move-up 600ms ease-in;
     -moz-animation: move-up 600ms ease-in;
@@ -102,7 +101,7 @@ p {
   line-height: 1.65; }
 
 a {
-  color: #666666;
+  color: black;
   font-weight: bold;
   text-decoration: underline;
   cursor: pointer; }
@@ -112,7 +111,7 @@ strong.important {
 
 hr {
   border: none;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid #666666;
   margin-top: 20px;
   margin-bottom: 30px; }
 
@@ -139,7 +138,7 @@ hr {
   100% {
     opacity: 1; } }
 .game-container {
-  margin-top: 10px;
+  margin-top: 15px;
   position: relative;
   padding: 15px;
   cursor: default;
@@ -150,7 +149,7 @@ hr {
   -ms-user-select: none;
   -ms-touch-action: none;
   touch-action: none;
-  background: #cbe1db;
+  background: #bbbbbb;
   border-radius: 6px;
   width: 500px;
   height: 500px;
@@ -164,7 +163,7 @@ hr {
     right: 0;
     bottom: 0;
     left: 0;
-    background: rgba(238, 228, 218, 0.5);
+    background: rgba(255, 255, 255, 0.5);
     z-index: 100;
     text-align: center;
     -webkit-animation: fade-in 800ms ease 1200ms;
@@ -184,19 +183,19 @@ hr {
       margin-top: 59px; }
     .game-container .game-message a {
       display: inline-block;
-      background: #777777;
+      background: #888888;
       border-radius: 3px;
       padding: 0 20px;
       text-decoration: none;
-      color: #ffffff;
+      color: white;
       height: 40px;
       line-height: 42px;
       margin-left: 9px; }
       .game-container .game-message a.keep-playing-button {
         display: none; }
     .game-container .game-message.game-won {
-      background: rgba(237, 194, 46, 0.5);
-      color: #ffffff; }
+      background: rgba(255, 255, 255, 0.5);
+      color: black; }
       .game-container .game-message.game-won a.keep-playing-button {
         display: inline-block; }
     .game-container .game-message.game-won, .game-container .game-message.game-over {
@@ -221,7 +220,7 @@ hr {
   margin-right: 15px;
   float: left;
   border-radius: 3px;
-  background: rgba(187, 217, 217, 1); }
+  background: rgba(255, 255, 255, 0.35); }
   .grid-cell:last-child {
     margin-right: 0; }
 
@@ -308,76 +307,65 @@ hr {
   transition-property: transform; }
   .tile .tile-inner {
     border-radius: 3px;
-    background: #eee4da;
+    background: white;
     text-align: center;
     font-weight: bold;
     z-index: 10;
     font-size: 55px; }
+  .tile.tile-2 .tile-inner {
+    background: white; }
+  .tile.tile-4 .tile-inner {
+    background: white; }
+  .tile.tile-8 .tile-inner {
+    background: white; }
+  .tile.tile-16 .tile-inner {
+    background: white; }
+  .tile.tile-32 .tile-inner {
+    background: white; }
+  .tile.tile-64 .tile-inner {
+    background: white; }
+  .tile.tile-128 .tile-inner {
+    background: white;
+    font-size: 45px; }
+    @media screen and (max-width: 520px) {
+      .tile.tile-128 .tile-inner {
+        font-size: 25px; } }
+  .tile.tile-256 .tile-inner {
+    background: white;
+    font-size: 45px; }
+    @media screen and (max-width: 520px) {
+      .tile.tile-256 .tile-inner {
+        font-size: 25px; } }
+  .tile.tile-512 .tile-inner {
+    background: white;
+    font-size: 45px; }
+    @media screen and (max-width: 520px) {
+      .tile.tile-512 .tile-inner {
+        font-size: 25px; } }
+  .tile.tile-1024 .tile-inner {
+    background: white;
+    font-size: 35px; }
+    @media screen and (max-width: 520px) {
+      .tile.tile-1024 .tile-inner {
+        font-size: 15px; } }
+  .tile.tile-2048 .tile-inner {
+    background: white;
+    font-size: 35px; }
+    @media screen and (max-width: 520px) {
+      .tile.tile-2048 .tile-inner {
+        font-size: 15px; } }
   .tile.tile-grass-1 .tile-inner {
-    color: #ffffff;
-	background: #6bff6b; }
+    color: white;
+    background: #6bff6b; }
   .tile.tile-water-1 .tile-inner {
-    color: #ffffff;
-	background: #66ccff; }
+    color: white;
+    background: #66ccff; }
   .tile.tile-fire-1 .tile-inner {
-    color: #ffffff;
-	background: #ff6680; }
-  .tile.tile-number-2 .tile-inner {
-    color: #000000;
-    background: #ffffff; }
-  .tile.tile-number-4 .tile-inner {
-    color: #000000;
-    background: #ffffff; }
-  .tile.tile-number-8 .tile-inner {
-    color: #000000;
-    background: #ffffff; }
-  .tile.tile-number-16 .tile-inner {
-    color: #000000;
-    background: #ffffff; }
-  .tile.tile-number-32 .tile-inner {
-    color: #000000;
-    background: #ffffff; }
-  .tile.tile-number-64 .tile-inner {
-    color: #000000;
-    background: #ffffff; }
-  .tile.tile-number-128 .tile-inner {
-    color: #000000;
-    background: #ffffff;
-    font-size: 45px; }
-    @media screen and (max-width: 520px) {
-      .tile.tile-number-128 .tile-inner {
-        font-size: 25px; } }
-  .tile.tile-number-256 .tile-inner {
-    color: #000000;
-    background: #ffffff;
-    font-size: 45px; }
-    @media screen and (max-width: 520px) {
-      .tile.tile-number-256 .tile-inner {
-        font-size: 25px; } }
-  .tile.tile-number-512 .tile-inner {
-    color: #000000;
-    background: #ffffff;
-    font-size: 45px; }
-    @media screen and (max-width: 520px) {
-      .tile.tile-number-512 .tile-inner {
-        font-size: 25px; } }
-  .tile.tile-number-1024 .tile-inner {
-    color: #000000;
-    background: #ffffff;
-    font-size: 35px; }
-    @media screen and (max-width: 520px) {
-      .tile.tile-number-1024 .tile-inner {
-        font-size: 15px; } }
-  .tile.tile-number-2048 .tile-inner {
-    color: #000000;
-    background: #ffffff;
-    font-size: 35px; }
-    @media screen and (max-width: 520px) {
-      .tile.tile-number-2048 .tile-inner {
-        font-size: 15px; } }
+    color: white;
+    background: #ff6680; }
   .tile.tile-super .tile-inner {
-    color: #000000;
-    background: #ffffff;
+    color: black;
+    background: white;
     font-size: 30px; }
     @media screen and (max-width: 520px) {
       .tile.tile-super .tile-inner {
@@ -493,11 +481,11 @@ hr {
 
 .restart-button {
   display: inline-block;
-  background: #777777;
+  background: #888888;
   border-radius: 3px;
   padding: 0 20px;
   text-decoration: none;
-  color: #ffffff;
+  color: white;
   height: 40px;
   line-height: 42px;
   display: block;
@@ -535,7 +523,7 @@ hr {
     width: 55%;
     display: block;
     box-sizing: border-box;
-    line-height: 1.65;	}
+    line-height: 1.65; }
 
   .restart-button {
     width: 42%;
@@ -556,7 +544,7 @@ hr {
     -ms-user-select: none;
     -ms-touch-action: none;
     touch-action: none;
-    background: #bbada0;
+    background: #bbbbbb;
     border-radius: 6px;
     width: 280px;
     height: 280px;
@@ -570,7 +558,7 @@ hr {
       right: 0;
       bottom: 0;
       left: 0;
-      background: rgba(238, 228, 218, 0.5);
+      background: rgba(255, 255, 255, 0.5);
       z-index: 100;
       text-align: center;
       -webkit-animation: fade-in 800ms ease 1200ms;
@@ -590,19 +578,19 @@ hr {
         margin-top: 59px; }
       .game-container .game-message a {
         display: inline-block;
-        background: #8f7a66;
+        background: #888888;
         border-radius: 3px;
         padding: 0 20px;
         text-decoration: none;
-        color: #f9f6f2;
+        color: white;
         height: 40px;
         line-height: 42px;
         margin-left: 9px; }
         .game-container .game-message a.keep-playing-button {
           display: none; }
       .game-container .game-message.game-won {
-        background: rgba(237, 194, 46, 0.5);
-        color: #f9f6f2; }
+        background: rgba(255, 255, 255, 0.5);
+        color: black; }
         .game-container .game-message.game-won a.keep-playing-button {
           display: inline-block; }
       .game-container .game-message.game-won, .game-container .game-message.game-over {
@@ -627,7 +615,7 @@ hr {
     margin-right: 10px;
     float: left;
     border-radius: 3px;
-    background: rgba(238, 228, 218, 0.35); }
+    background: rgba(255, 255, 255, 0.35); }
     .grid-cell:last-child {
       margin-right: 0; }
 
