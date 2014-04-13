@@ -51,8 +51,20 @@ h1.title {
   float: right;
   text-align: right; }
 
+.score-container, .best-container {
+  font-size: 25px;
+  color: white; }
+
 .next-tile-container {
-  font-size: 15px;
+  font-size: 15px; }
+
+.next-grass {
+  color: #6bff6b; }
+
+.next-water {
+  color: #66ccff; }
+
+.next-fire {
   color: #ff6680; }
 
 .score-container, .best-container, .next-tile-container {
@@ -64,7 +76,6 @@ h1.title {
   line-height: 47px;
   font-weight: bold;
   border-radius: 3px;
-  color: white;
   margin-top: 8px;
   text-align: center;
   min-width: 110px;

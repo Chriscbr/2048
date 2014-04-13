@@ -50,6 +50,7 @@ GameManager.prototype.setup = function () {
     this.won         = previousState.won;
     this.keepPlaying = previousState.keepPlaying;
     this.deck        = previousState.deck;
+    this.nextTile    = previousState.nextTile;
   } else {
     this.grid        = new Grid(this.size);
     this.score       = 0;
@@ -57,6 +58,7 @@ GameManager.prototype.setup = function () {
     this.won         = false;
     this.keepPlaying = false;
     this.deck        = [];
+    this.nextTile    = {selection: 0, type: "grass"};
 
     // Add the initial tiles
     this.addStartTiles();
@@ -68,6 +70,9 @@ GameManager.prototype.setup = function () {
 
 // Set up the initial tiles to start the game with
 GameManager.prototype.addStartTiles = function () {
+  this.shuffleDeck();
+  this.pickNextTile();
+  
   for (var i = 0; i < this.startTiles; i++) {
     this.addRandomTile();
   }
@@ -75,15 +80,9 @@ GameManager.prototype.addStartTiles = function () {
 
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function (direction) {
-  // Restocks the deck if it is empty
-  if (this.deck.length === 0) {
-	this.shuffleDeck();
-  }
-  
   if (this.grid.cellsAvailable()) {
-    var selection = Math.floor(Math.random() * this.deck.length);
-	var type = this.deck[selection]; // Select random tile
-	this.deck.splice(selection, 1); // Remove tile from deck
+	var type = this.nextTile.type;
+	this.deck.splice(this.nextTile.selection, 1); // Remove tile from deck
 	var tile;
 	
 	// Limit spawning position based on swipe direction
@@ -129,10 +128,16 @@ GameManager.prototype.addRandomTile = function (direction) {
 	}
 
     this.grid.insertTile(tile);
+    
+    // Restocks the deck if it is empty
+    if (this.deck.length === 0) {
+      this.shuffleDeck();
+    }
+    
+    this.pickNextTile();
   }
 };
 
-// Generates the new deck
 GameManager.prototype.shuffleDeck = function() {
 	var i;
 	for (i = 0; i < this.deckSize; i++) {
@@ -145,6 +150,13 @@ GameManager.prototype.shuffleDeck = function() {
 		this.deck.push("fire");
 	}
 };
+
+// Chooses the next tile to display above the board
+GameManager.prototype.pickNextTile = function() {
+  var rand = Math.floor(Math.random() * this.deck.length);
+  var chosen = this.deck[rand];
+  this.nextTile = {selection: rand, type: chosen};
+}
 
 // Sends the updated grid to the actuator
 GameManager.prototype.actuate = function () {
@@ -164,6 +176,7 @@ GameManager.prototype.actuate = function () {
     over:       this.over,
     won:        this.won,
     bestScore:  this.storageManager.getBestScore(),
+    nextTile:   this.nextTile,
     terminated: this.isGameTerminated()
   });
 
@@ -177,7 +190,8 @@ GameManager.prototype.serialize = function () {
     over:        this.over,
     won:         this.won,
     keepPlaying: this.keepPlaying,
-	deck:        this.deck
+	deck:        this.deck,
+    nextTile:    this.nextTile
   };
 };
 

@@ -66,8 +66,22 @@ h1.title {
   text-align: right;
 }
 
+.score-container, .best-container {
+  font-size: 25px;
+  color: white;
+}
+
 .next-tile-container {
   font-size: 15px;
+}
+
+.next-grass {
+  color: #6bff6b;
+}
+.next-water {
+  color: #66ccff;
+}
+.next-fire {
   color: #ff6680;
 }
 
@@ -82,7 +96,6 @@ h1.title {
   line-height: $height + 22px;
   font-weight: bold;
   border-radius: 3px;
-  color: white;
   margin-top: 8px;
   text-align: center;
   min-width: ($field-width - 170) / 3;
@@ -123,7 +136,7 @@ h1.title {
 }
 
 .next-tile-container:after {
-    content: "Next Tile";
+  content: "Next Tile";
 }
 
 p {
@@ -346,19 +359,6 @@ hr {
   $base: 2;
   $exponent: 1;
   $limit: 11;
-
-  // Colors for all 11 states, false = no special color
-  $special-colors: false false, // 2
-                   false false, // 4
-                   false false, // 8
-                   false false, // 16
-                   false false, // 32
-                   false false, // 64
-                   false false, // 128
-                   false false, // 256
-                   false false, // 512
-                   false false, // 1024
-                   false false; // 2048
 
   // Build tile colors
   @while $exponent <= $limit {
