@@ -86,7 +86,7 @@ GameManager.prototype.addRandomTile = function (direction) {
 	var tile;
 	
 	// Limit spawning position based on swipe direction
-	if (direction) {
+	if (direction < 4) {
 		var allEmpty = this.grid.availableCells();
 		var goodEmpty = [];
 		switch (direction) {
