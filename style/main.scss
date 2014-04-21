@@ -3,7 +3,7 @@
 
 $field-width: 500px;
 $grid-spacing: 15px;
-$grid-row-cells: 4;
+$grid-row-cells: 5;
 $tile-size: ($field-width - $grid-spacing * ($grid-row-cells + 1)) / $grid-row-cells;
 $tile-border-radius: 3px;
 
@@ -346,8 +346,8 @@ hr {
     text-align: center;
     font-weight: bold;
     z-index: 10;
-
-    font-size: 55px;
+    
+    font-size: 45px;
   }
 
   // Movement transition
@@ -364,24 +364,24 @@ hr {
   @while $exponent <= $limit {
     $power: pow($base, $exponent);
 
-    &.tile-#{$power} .tile-inner {
+    &.tile-number-#{$power} .tile-inner {
 
       // Set background
       background: $tile-color;
 
       // Adjust font size for bigger numbers
       @if $power >= 100 and $power < 1000 {
-        font-size: 45px;
+        font-size: 35px;
 
         // Media queries placed here to avoid carrying over the rest of the logic
         @include smaller($mobile-threshold) {
-          font-size: 25px;
+          font-size: 20px;
         }
       } @else if $power >= 1000 {
-        font-size: 35px;
+        font-size: 25px;
 
         @include smaller($mobile-threshold) {
-          font-size: 15px;
+          font-size: 10px;
         }
       }
     }
@@ -401,6 +401,10 @@ hr {
   &.tile-fire-1 .tile-inner {
     color: $bright-text-color;
     background: $tile-fire-color;
+  }
+  
+  &.tile-disabled-1 .tile-inner {
+    background: rgba(17, 27, 37, 0.35);
   }
 
   // Super tiles (above 2048)

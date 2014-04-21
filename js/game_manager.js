@@ -70,6 +70,10 @@ GameManager.prototype.setup = function () {
 
 // Set up the initial tiles to start the game with
 GameManager.prototype.addStartTiles = function () {
+  this.grid.insertTile(new Tile({x: 0, y: 0}, null, "disabled"));
+  this.grid.insertTile(new Tile({x: 0, y: 4}, null, "disabled"));
+  this.grid.insertTile(new Tile({x: 4, y: 0}, null, "disabled"));
+  this.grid.insertTile(new Tile({x: 4, y: 4}, null, "disabled"));
   this.shuffleDeck();
   this.pickNextTile();
   
@@ -261,8 +265,6 @@ GameManager.prototype.move = function (direction) {
           // The mighty 2048 tile
           if (merged.value === 2048) self.won = true;
         } else if (next && !next.mergedFrom && // Combines different elemental values
-                   tile.type !== "number" &&
-				   next.type !== "number" &&
 		           tile.value === next.value &&
 				   ((tile.type === "grass" && next.type === "water") ||
 				    (tile.type === "water" && next.type === "fire") ||
@@ -281,7 +283,9 @@ GameManager.prototype.move = function (direction) {
 		  // Update the score
           self.score += merged.value;
 		} else {
-          self.moveTile(tile, positions.farthest);
+          if (tile.type !== "disabled") {
+            self.moveTile(tile, positions.farthest);
+          }
         }
 
         if (!self.positionsEqual(cell, tile)) {
@@ -373,7 +377,7 @@ GameManager.prototype.tileMatchesAvailable = function () {
 
           if (other && other.value === tile.value &&
 		      ((other.type === "number" && tile.type === "number") || 
-			   (other.type !== tile.type && other.type !== "number" && tile.type !== "number"))) {
+			   (other.type !== tile.type && other.type !== "number" && tile.type !== "number" && tile.type !== "disabled" && other.type !== "disabled"))) {
             return true; // These two tiles can be merged
           }
         }
