@@ -96,7 +96,7 @@ GameManager.prototype.addRandomTile = function (direction) {
 		switch (direction) {
 			case 0:
               for (var i = 0; i < allEmpty.length; i++) {
-			    if (allEmpty[i].y === 3) {
+			    if (allEmpty[i].y === 4) {
 					goodEmpty.push(allEmpty[i]);
 				}
 			  }
@@ -117,7 +117,7 @@ GameManager.prototype.addRandomTile = function (direction) {
 			  break;
 			case 3:
 			  for (var i = 0; i < allEmpty.length; i++) {
-			    if (allEmpty[i].x === 3) {
+			    if (allEmpty[i].x === 4) {
 					goodEmpty.push(allEmpty[i]);
 				}
 			  }
