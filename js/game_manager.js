@@ -30,11 +30,7 @@ GameManager.prototype.keepPlaying = function () {
 
 // Return true if the game is lost, or has won and the user hasn't kept playing
 GameManager.prototype.isGameTerminated = function () {
-  if (this.over || (this.won && !this.keepPlaying)) {
-    return true;
-  } else {
-    return false;
-  }
+  return this.over || (this.won && !this.keepPlaying);
 };
 
 // Set up the game
@@ -96,28 +92,28 @@ GameManager.prototype.addRandomTile = function (direction) {
 		switch (direction) {
 			case 0:
               for (var i = 0; i < allEmpty.length; i++) {
-			    if (allEmpty[i].y === 4) {
+			    if (allEmpty[i].y === 4 || (allEmpty[i].y === 3 && (allEmpty[i].x === 0 || allEmpty[i].x === 4))) {
 					goodEmpty.push(allEmpty[i]);
 				}
 			  }
 			  break;
 			case 1:
 			  for (var i = 0; i < allEmpty.length; i++) {
-			    if (allEmpty[i].x === 0) {
+			    if (allEmpty[i].x === 0 || (allEmpty[i].x === 1 && (allEmpty[i].y === 0 || allEmpty[i].y === 4))) {
 					goodEmpty.push(allEmpty[i]);
 				}
 			  }
 			  break;
 			case 2:
 			  for (var i = 0; i < allEmpty.length; i++) {
-			    if (allEmpty[i].y === 0) {
+			    if (allEmpty[i].y === 0 || (allEmpty[i].y === 1 && (allEmpty[i].x === 0 || allEmpty[i].x === 4))) {
 					goodEmpty.push(allEmpty[i]);
 				}
 			  }
 			  break;
 			case 3:
 			  for (var i = 0; i < allEmpty.length; i++) {
-			    if (allEmpty[i].x === 4) {
+			    if (allEmpty[i].x === 4 || (allEmpty[i].x === 3 && (allEmpty[i].y === 0 || allEmpty[i].y === 4))) {
 					goodEmpty.push(allEmpty[i]);
 				}
 			  }
